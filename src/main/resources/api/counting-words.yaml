@@ -1,0 +1,139 @@
+openapi: 3.0.2
+info:
+  title: Swagger Counting Words - OpenAPI 3.0
+  description: This is an api to call various for the Counting Words assessment
+  version: "1.0"
+servers:
+  - url: http://localhost:8080/countingwords/
+tags:
+  - name: Counting words
+paths:
+  /highest-frequency:
+    post:
+      tags:
+        - Highest frequency
+      summary: Return the highest frequency
+      description: Return the highest frequency in the given text
+      operationId: highestFrequency
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HighestFrequencyRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HighestFrequencyResponse'
+        '405':
+          description: Invalid input
+  /frequency-for-word:
+    post:
+      tags:
+        - Frequency for word
+      summary: Return the frequency of a word
+      description: Return the frequency of a specific word
+      operationId: FrequencyForWord
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WordFrequencyRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WordFrequencyResponse'
+        '405':
+          description: Invalid input
+  /most-frequent-n-words:
+    post:
+      tags:
+        - Most frequent n words 
+      summary: Return the frequency of top n words
+      description: Return the frequency of top n words
+      operationId: MostFrequentNWords 
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MostFrequentNWordsRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MostFrequentNWordsResponse'
+        '405':
+          description: Invalid input
+components:
+  schemas:
+    WordFrequencyRequest:
+      required:
+        - text
+        - frequency
+      type: object
+      properties:
+        text:
+          $ref: '#/components/schemas/Text'
+        word:
+          $ref: '#/components/schemas/Word'
+    WordFrequencyResponse:
+      type: object
+      properties:
+        frequency:
+          $ref: '#/components/schemas/Number'
+    HighestFrequencyRequest:
+      required:
+        - text
+      type: object
+      properties:
+        text:
+          $ref: '#/components/schemas/Text'
+    HighestFrequencyResponse:
+      type: object
+      properties:
+        frequency:
+          $ref: '#/components/schemas/Number'
+    MostFrequentNWordsRequest:
+      required:
+        - text
+        - amountOfWords
+      type: object
+      properties:
+        text:
+          $ref: '#/components/schemas/Text'
+        amountOfWords:
+          $ref: '#/components/schemas/Number'
+    MostFrequentNWordsResponse:
+      type: object
+      properties:
+        wordFrequency:
+          type: array
+          items:
+            $ref: '#/components/schemas/WordFrequency'
+    WordFrequency:
+      type: object
+      properties:
+        word:
+          $ref: '#/components/schemas/Word'
+        frequency:
+          $ref: '#/components/schemas/Number'
+    Text:
+      type: string
+      example: 'The sun will shine on us'
+    Word:
+      type: string
+      example: 'THE'
+    Number:
+      type: integer
+      example: '5'
+    
